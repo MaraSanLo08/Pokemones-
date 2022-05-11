@@ -28,5 +28,44 @@ Aplicación de uso de la api de pokemones.co
     <p> Total de Pokemones:{{total}} </p> 
    </div> 
   </div> 
- </body>
-</html>
+ </body>var app=new Vue({
+    el:"#app1",
+    data:
+    {    // aqui declaramos las variables
+        titulo: "Api de Pokemones",
+        url:"http://pokeapi.co/api/v2/pokemon",
+        total: 0,
+        siguiente:"",
+        anterior:"",
+        pokemones:[],
+        pokemon:[],
+        nombrePoke:"",
+        imgPoke:"",
+                    
+        },
+    mounted()
+    {
+        this.pidePokes(this.url);
+        this.verPoke("https://pokeapi.co/api/v2/pokemon/1/","bulbasaur");
+    },
+    methods:
+    {  
+        pidePokes: async function(url)
+        {
+            const response = await fetch(url);
+            this.pokemones = await response.json();
+            this.total = this.pokemones.count;
+            this.siguiente=this.pokemones.next;
+            this.anterior=this.pokemones.previous;
+            this.pokemones = this.pokemones.results;
+        },
+        verPoke: async function (urlPoke,nombrePoke)
+        {
+            const response = await fetch(urlPoke);
+            this.pokemon = await response.json();
+            this.pokemon = this.pokemon.sprites.other //imagenes del Pokemones
+            this.nombrePoke=nombrePoke;
+            this.imgPoke=this.pokemon.dream_world.front_default;
+        }
+    },
+}) //fin de objeto Vue</html>
